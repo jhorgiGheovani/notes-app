@@ -14,7 +14,7 @@ class NoteTable extends Equatable {
       required this.tanggal});
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'title': title, 'isi': isi, 'tanggal': tanggal};
+      {'title': title, 'isi': isi, 'tanggal': tanggal};
 
   factory NoteTable.fromMap(Map<String, dynamic> map) => NoteTable(
       id: map['id'],
@@ -28,6 +28,5 @@ class NoteTable extends Equatable {
   Note toEntity() => Note(id: id, title: title, isi: isi, tanggal: tanggal);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, title, isi, tanggal];
 }

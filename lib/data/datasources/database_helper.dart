@@ -31,7 +31,7 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE  $_tblNotes (
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         isi TEXT,
         tanggal TEXT
@@ -54,5 +54,22 @@ class DatabaseHelper {
     final db = await database;
     final List<Map<String, dynamic>> results = await db!.query(_tblNotes);
     return results;
+  }
+
+  Future<Map<String, dynamic>?> getNoteById(int id) async {
+    final db = await database;
+    final results =
+        await db!.query(_tblNotes, where: 'id = ?', whereArgs: [id]);
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<int> updateNoteContent(int id, String newIsi, String newTitle) async {
+    final db = await database;
+    return await db!.update(_tblNotes, {'title': newTitle, 'isi': newIsi},
+        where: 'id = ?', whereArgs: [id]);
   }
 }

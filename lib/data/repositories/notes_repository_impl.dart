@@ -39,4 +39,28 @@ class NoteRepositoryImpl implements NoteRepository {
       throw e;
     }
   }
+
+  @override
+  Future<Either<Failure, Note>> getNoteById(int id) async {
+    try {
+      final result = await noteLocalDataSource.getNoteById(id);
+      return Right(result!.toEntity());
+    } catch (e) {
+      return Left(CommonFailure("Failed to load details"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateNoteContent(
+      int id, String newIsi, String newTitle) async {
+    try {
+      final result =
+          await noteLocalDataSource.updateNoteContent(id, newTitle, newIsi);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      throw e;
+    }
+  }
 }
