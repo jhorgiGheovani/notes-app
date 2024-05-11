@@ -48,19 +48,41 @@ class _DetailPageState extends State<DetailPage> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                           child: const Icon(Icons.arrow_back),
                         ),
                         const Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            //context read
-                            context.read<DetailPageBloc>().add(
-                                UpdateNoteContentEvent(widget.id,
-                                    titleController.text, isiController.text));
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(Icons.check),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                //context read
+                                // context.read<DetailPageBloc>().add(
+                                //     UpdateNoteContentEvent(
+                                //         widget.id,
+                                //         titleController.text,
+                                //         isiController.text));
+                                showAlertDialog(context, widget.id);
+                                // Navigator.pop(context);
+                              },
+                              child: const Icon(Icons.delete_rounded),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () {
+                                //context read
+                                context.read<DetailPageBloc>().add(
+                                    UpdateNoteContentEvent(
+                                        widget.id,
+                                        titleController.text,
+                                        isiController.text));
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(Icons.check),
+                            )
+                          ],
                         ),
                       ],
                     )),
@@ -88,4 +110,31 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context, int id) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {
+      context.read<DetailPageBloc>().add(RemoveNoteEvent(id));
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    content: Text("Are you sure want to delete this note?"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

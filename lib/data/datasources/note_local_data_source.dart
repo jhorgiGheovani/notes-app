@@ -4,7 +4,7 @@ import 'package:my_notes_app/utils/excption.dart';
 
 abstract class NoteLocalDataSource {
   Future<String> insertNote(NoteTable notes);
-  Future<String> removeNote(NoteTable notes);
+  Future<String> removeNote(int id);
   Future<List<NoteTable>> getAllNotes();
   Future<NoteTable?> getNoteById(int id);
   Future<bool> updateNoteContent(int id, String newTitle, String newIsi);
@@ -32,9 +32,9 @@ class NoteLocalDataSourceImpl implements NoteLocalDataSource {
   }
 
   @override
-  Future<String> removeNote(NoteTable notes) async {
+  Future<String> removeNote(int id) async {
     try {
-      await databaseHelper.removeNote(notes);
+      await databaseHelper.removeNote(id);
       return 'remove notes success';
     } catch (e) {
       throw DatabaseException(e.toString());

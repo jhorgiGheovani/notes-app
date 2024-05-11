@@ -42,11 +42,53 @@ class _HomePageState extends State<HomePage> with RouteAware {
     return Scaffold(
       body: SafeArea(child: BlocBuilder<HomePageBloc, HomePageState>(
         builder: (context, state) {
-          if (state is HomePageLoadedDataState) {
+          if (state is HomePageEmptDataState) {
+            return const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "All Notes",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text("0 Notes"),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text("Empty Notes"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          } else if (state is HomePageLoadedDataState) {
             final result = state.result;
             return ListView.builder(
-              itemCount: result.length,
+              itemCount: result.length + 1,
               itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                      padding: const EdgeInsets.only(left: 8, bottom: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "All Notes",
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold),
+                          ),
+                          Text("${result.length} Notes"),
+                        ],
+                      ));
+                }
+                int numberOfExtraWidget = 1;
+                index = index - numberOfExtraWidget;
                 final item = result[index];
                 return NoteCard(item);
               },
@@ -54,7 +96,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
           } else if (state is HomePageFailedState) {
             return Center(child: Text(state.message));
           } else {
-            return Center(child: Text("Semothing went wrong"));
+            return const Center(child: CircularProgressIndicator());
           }
         },
       )),

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_notes_app/domain/usecase/get_note_detail_usecase.dart';
+import 'package:my_notes_app/domain/usecase/remove_notes.dart';
 import 'package:my_notes_app/domain/usecase/update_note_content_usecase.dart';
 import 'package:my_notes_app/presentation/bloc/detail_page_bloc/detail_page_event.dart';
 import 'package:my_notes_app/presentation/bloc/detail_page_bloc/detail_page_state.dart';
@@ -7,8 +8,10 @@ import 'package:my_notes_app/presentation/bloc/detail_page_bloc/detail_page_stat
 class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
   final GetNoteDetailUseCase _getNoteDetailUseCase;
   final UpdateNoteContentUsecase _updateNoteContentUsecase;
+  final RemoveNotes _removeNotes;
 
-  DetailPageBloc(this._getNoteDetailUseCase, this._updateNoteContentUsecase)
+  DetailPageBloc(this._getNoteDetailUseCase, this._updateNoteContentUsecase,
+      this._removeNotes)
       : super(DetailPageEmptyState()) {
     //get note details
     on<GetDetailNoteEvent>((event, emit) async {
@@ -36,6 +39,15 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
       }, (success) {
         emit(DetailPageSuccessState("sukses update content note"));
       });
+    });
+
+    on<RemoveNoteEvent>((event, emit) async {
+      final noteId = event.id;
+
+      final result = await _removeNotes.execute(noteId);
+
+      result.fold((failure) => emit(DetailPageFailedState(failure.message)),
+          (success) => emit(DetailPageSuccessState(success)));
     });
   }
 }

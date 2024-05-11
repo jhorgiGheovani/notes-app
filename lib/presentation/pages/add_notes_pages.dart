@@ -4,6 +4,7 @@ import 'package:my_notes_app/domain/entities/note.dart';
 import 'package:my_notes_app/presentation/bloc/add_note_page_bloc/add_note_page_bloc.dart';
 import 'package:my_notes_app/presentation/bloc/add_note_page_bloc/add_note_page_event.dart';
 import 'package:my_notes_app/presentation/bloc/add_note_page_bloc/add_note_page_state.dart';
+import 'package:my_notes_app/utils/helper_function.dart';
 
 class AddNotesPages extends StatefulWidget {
   static const String ROUTE_NAME = "/add_notes_page";
@@ -56,7 +57,9 @@ class _AddNotesPagesState extends State<AddNotesPages> {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: const Icon(Icons.arrow_back),
                 ),
                 const Spacer(),
@@ -67,7 +70,7 @@ class _AddNotesPagesState extends State<AddNotesPages> {
                         id: 1,
                         title: titleController.text,
                         isi: descController.text,
-                        tanggal: "21232")));
+                        tanggal: getCurrentTimeStamp())));
                     Navigator.pop(context);
                   },
                   child: const Icon(Icons.check),

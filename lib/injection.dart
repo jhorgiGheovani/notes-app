@@ -17,7 +17,8 @@ final locator = GetIt.instance;
 void init() {
   //bloc
   locator.registerFactory(() => HomePageBloc(locator()));
-  locator.registerFactory(() => DetailPageBloc(locator(), locator()));
+  locator
+      .registerFactory(() => DetailPageBloc(locator(), locator(), locator()));
   locator.registerFactory(() => AddNotePageBloc(locator()));
   //use case
   locator.registerLazySingleton(() => GetNotesList(locator()));

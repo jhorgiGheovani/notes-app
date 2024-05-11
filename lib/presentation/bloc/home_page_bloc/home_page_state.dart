@@ -10,6 +10,14 @@ abstract class HomePageState extends Equatable {
 
 class HomePageEmptyState extends HomePageState {}
 
+class HomePageEmptDataState extends HomePageState {
+  final String message;
+  HomePageEmptDataState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
 class HomePageSuccessState extends HomePageState {
   final String message;
 

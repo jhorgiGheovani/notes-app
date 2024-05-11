@@ -44,10 +44,9 @@ class DatabaseHelper {
     return await db!.insert(_tblNotes, noteTable.toJson());
   }
 
-  Future<int> removeNote(NoteTable noteTable) async {
+  Future<int> removeNote(int id) async {
     final db = await database;
-    return await db!
-        .delete(_tblNotes, where: 'id = ?', whereArgs: [noteTable.id]);
+    return await db!.delete(_tblNotes, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<Map<String, dynamic>>> getNotesList() async {

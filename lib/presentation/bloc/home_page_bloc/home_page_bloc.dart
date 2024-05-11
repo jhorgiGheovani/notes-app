@@ -11,7 +11,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final result = await _getNotesList.execute();
 
       result.fold((failure) => emit(HomePageFailedState(failure.message)),
-          (data) => emit(HomePageLoadedDataState(data)));
+          (data) {
+        // emit(HomePageLoadedDataState(data));
+        if (data.isEmpty) {
+          emit(HomePageEmptDataState("Note list was empty"));
+        } else {
+          emit(HomePageLoadedDataState(data));
+        }
+      });
     });
   }
 }

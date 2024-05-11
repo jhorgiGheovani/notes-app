@@ -17,10 +17,9 @@ class NoteRepositoryImpl implements NoteRepository {
   }
 
   @override
-  Future<Either<Failure, String>> removeNotes(Note note) async {
+  Future<Either<Failure, String>> removeNotes(int id) async {
     try {
-      final result =
-          await noteLocalDataSource.removeNote(NoteTable.fromEntity(note));
+      final result = await noteLocalDataSource.removeNote(id);
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));

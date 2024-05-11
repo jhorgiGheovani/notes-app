@@ -13,6 +13,14 @@ class GetDetailNoteEvent extends DetailPageEvent {
   List<Object> get props => [id];
 }
 
+class RemoveNoteEvent extends DetailPageEvent {
+  final int id;
+  RemoveNoteEvent(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
+
 class UpdateNoteContentEvent extends DetailPageEvent {
   final int id;
   final String newTitle;
