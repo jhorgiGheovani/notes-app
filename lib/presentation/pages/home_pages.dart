@@ -43,30 +43,69 @@ class _HomePageState extends State<HomePage> with RouteAware {
       body: SafeArea(child: BlocBuilder<HomePageBloc, HomePageState>(
         builder: (context, state) {
           if (state is HomePageEmptDataState) {
-            return const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "All Notes",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text("0 Notes"),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text("Empty Notes"),
+            return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        "What's on your \nmind?",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            );
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'images/empty_notes.png',
+                                  height: 150,
+                                ),
+                                const Text(
+                                  "Let's write what's on your mind!",
+                                  style: TextStyle(color: Colors.grey),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ));
+
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       "All Notes",
+            //       style: TextStyle(
+            //         fontSize: 30,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //     Text("0 Notes"),
+            //     Expanded(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Center(
+            //             child: Text("Empty Notes"),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // );
           } else if (state is HomePageLoadedDataState) {
             final result = state.result;
             return ListView.builder(
@@ -101,6 +140,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
         },
       )),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 1, 146, 243),
           child: const Icon(Icons.add, color: Colors.white, size: 45),
           onPressed: () =>
               {Navigator.pushNamed(context, AddNotesPages.ROUTE_NAME)}),

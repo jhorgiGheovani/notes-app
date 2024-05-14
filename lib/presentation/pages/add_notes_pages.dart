@@ -16,12 +16,27 @@ class AddNotesPages extends StatefulWidget {
 class _AddNotesPagesState extends State<AddNotesPages> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
-
+  bool isButtonEnabled = false;
   @override
   void dispose() {
     super.dispose();
     titleController.dispose();
     descController.dispose();
+  }
+
+  void updateButtonState() {
+    setState(() {
+      // Enable button only if both fields are not empty
+      isButtonEnabled =
+          titleController.text.isNotEmpty || descController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.addListener(updateButtonState);
+    descController.addListener(updateButtonState);
   }
 
   @override
@@ -64,16 +79,19 @@ class _AddNotesPagesState extends State<AddNotesPages> {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  onTap: () {
-                    //context read
-                    context.read<AddNotePageBloc>().add(SavedNote(Note(
-                        id: 1,
-                        title: titleController.text,
-                        isi: descController.text,
-                        tanggal: getCurrentTimeStamp())));
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(Icons.check),
+                  onTap: isButtonEnabled
+                      ? () {
+                          //context read
+                          context.read<AddNotePageBloc>().add(SavedNote(Note(
+                              id: 1,
+                              title: titleController.text,
+                              isi: descController.text,
+                              tanggal: getCurrentTimeStamp())));
+                          Navigator.pop(context);
+                        }
+                      : null,
+                  child: Icon(Icons.check,
+                      color: isButtonEnabled ? null : Colors.grey),
                 ),
               ],
             )),

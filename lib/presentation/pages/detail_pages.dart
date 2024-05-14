@@ -14,6 +14,17 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool isButtonEnabled = false;
+
+  void updateButtonState(TextEditingController titleController,
+      TextEditingController isiController) {
+    setState(() {
+      // Enable button only if both fields are not empty
+      isButtonEnabled =
+          titleController.text.isNotEmpty && isiController.text.isNotEmpty;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +51,7 @@ class _DetailPageState extends State<DetailPage> {
               isiController.text =
                   ""; // Set text to empty if title is null or empty
             }
+            updateButtonState(titleController, isiController);
             return Column(
               children: [
                 Padding(
@@ -86,17 +98,23 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ],
                     )),
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Title',
-                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Title',
+                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
-                TextField(
-                  controller: isiController,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                    controller: isiController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ],
@@ -115,7 +133,7 @@ class _DetailPageState extends State<DetailPage> {
 showAlertDialog(BuildContext context, int id) {
   // set up the button
   Widget okButton = TextButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       context.read<DetailPageBloc>().add(RemoveNoteEvent(id));
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
@@ -124,7 +142,7 @@ showAlertDialog(BuildContext context, int id) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    content: Text("Are you sure want to delete this note?"),
+    content: const Text("Are you sure want to delete this note?"),
     actions: [
       okButton,
     ],
